@@ -15,9 +15,9 @@ class Enemy(object):
         angle = 360/number_of_bullets
         for i in range(number_of_bullets):
             bullets.Bullet(angle*i + offset_angle, bullet_speed, self.position)
-    def spiral(_self, number_of_bullets, bullet_speed, amount, delay):
+    def spiral(_self, number_of_bullets, bullet_speed, amount, delay, direction):
         for i in range(amount):
-            pattern.append({'ring': {'bullets': number_of_bullets, 'speed': bullet_speed, 'offset': i * 10}})
+            pattern.append({'ring': {'bullets': number_of_bullets, 'speed': bullet_speed, 'offset': i * direction * 10}})
             pattern.append({ 'wait': delay })
 
     def activate_spell_card(self) -> None:
@@ -29,7 +29,7 @@ class Enemy(object):
                 for key, data in attack.items():
                     match key:
                         case 'spiral':
-                            self.spiral(data[0], data[1], data[2], data[3])
+                            self.spiral(data[0], data[1], data[2], data[3], data[4])
                         case 'ring':
                             for _ in range(data[3]):
                                 pattern.append({'ring': {'bullets': data[0], 'speed': data[1],
