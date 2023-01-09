@@ -1,6 +1,5 @@
 import sys, pygame
 from pygame.locals import *
-from player import Player
 from main_setup import defaults, screens
 import bullets
 
