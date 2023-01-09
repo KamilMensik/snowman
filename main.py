@@ -75,5 +75,7 @@ while True:
             draw_text('PLAY', 40, 600, 200)
             draw_text('ABOUT', 40, 600, 300)
             draw_text('QUIT', 40, 600, 400)
+            if keys[pygame.K_RETURN]:
+                d.current_screen = screens(button_pos+1)
     pygame.display.flip()
     clock.tick(90)

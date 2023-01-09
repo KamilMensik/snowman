@@ -4,7 +4,7 @@ from player import Player
 from enemy import Enemy
 from enum import Enum
 
-screens = Enum('Screens', ['MENU', 'GAME', 'CREDITS', 'QUIT'])
+screens = Enum('Screens', ['GAME', 'CREDITS', 'QUIT', 'MENU'])
 
 class Defaults():
     def __init__(self) -> None:
