@@ -58,7 +58,7 @@ def game_loop():
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
-        if event.type == apply_pattern_event: enemy.applyPattern()
+        if event.type == apply_pattern_event and d.current_screen == screens.GAME: enemy.applyPattern()
         if event.type == key_input_debounce: key_debounce = False
     keys = pygame.key.get_pressed()
     x_axis, y_axis = axis(keys)
