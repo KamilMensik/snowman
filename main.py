@@ -68,12 +68,14 @@ while True:
         case screens.GAME:
             game_loop()
         case screens.MENU:
+            image = pygame.transform.scale(pygame.image.load('sprites/remilia_background.jpg'), (1200, 800))
+            screen.blit(image, (0,0))
             handle_menu_selection(y_axis)
-            pygame.draw.circle(screen, (255, 255, 255), (400, button_pos * 100 + 200), 10, 10)
-            draw_text('MAIN MENU', 50, 600, 100)
-            draw_text('PLAY', 40, 600, 200)
-            draw_text('ABOUT', 40, 600, 300)
-            draw_text('QUIT', 40, 600, 400)
+            pygame.draw.circle(screen, (255, 255, 255), (800, button_pos * 100 + 500), 10, 10)
+            draw_text('MANHA-TAN', 50, 950, 400)
+            draw_text('PLAY', 40, 950, 500)
+            draw_text('ABOUT', 40, 950, 600)
+            draw_text('QUIT', 40, 950, 700)
             if keys[pygame.K_RETURN]:
                 d.current_screen = screens(button_pos+1)
     pygame.display.flip()
