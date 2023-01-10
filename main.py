@@ -55,10 +55,9 @@ def game_loop():
     if focus:
         if focus_timer == 360:
             focus_timer = 0 
-        focus_timer += 1 
+        focus_timer += 30
         focus_rect = d.focus_image.get_rect()
         focus_rect.center = player.position.center
-        d.focus_image = pygame.transform.rotate(d.focus_image, focus_timer)
         screen.blit(d.focus_image, focus_rect)
         
     screen.blit(player.image, player.position)
@@ -70,7 +69,7 @@ def game_loop():
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
-        if event.type == apply_pattern_event and d.current_screen == screens.GAME: enemy.applyPattern()
+        if event.type == apply_pattern_event and d.current_screen == screens.GAME: enemy.applyPattern(player)
         if event.type == key_input_debounce: key_debounce = False
     keys = pygame.key.get_pressed()
     x_axis, y_axis = axis(keys)
