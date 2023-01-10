@@ -1,6 +1,6 @@
 import sys, pygame
 from pygame.locals import *
-from main_setup import defaults, screens
+from main_setup import defaults, screens, sounds
 import bullets
 
 pygame.init()
@@ -23,6 +23,7 @@ def handle_menu_selection(y_axis):
 
     if y_axis != 0 and key_debounce == False :
         key_debounce = True
+        sounds['browse'].play()
         button_pos += y_axis
         if button_pos < 0: 
             button_pos = len(screens) -2
@@ -77,6 +78,13 @@ while True:
             draw_text('ABOUT', 40, 950, 600)
             draw_text('QUIT', 40, 950, 700)
             if keys[pygame.K_RETURN]:
+                match button_pos:
+                    case 0:
+                        sounds['game_start'].play()
+                    case 2:
+                        sounds['exit'].play()
+                    case other:
+                        sounds['proceed'].play()
                 d.current_screen = screens(button_pos+1)
     pygame.display.flip()
     clock.tick(90)

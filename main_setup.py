@@ -4,7 +4,12 @@ from player import Player
 from enemy import Enemy
 from enum import Enum
 
+pygame.mixer.init()
 screens = Enum('Screens', ['GAME', 'CREDITS', 'QUIT', 'MENU'])
+sounds = { 'browse' : pygame.mixer.Sound('sounds/Browse.wav'),
+           'game_start' : pygame.mixer.Sound('sounds/Game_start.wav'),
+           'proceed' : pygame.mixer.Sound('sounds/Proceed.wav'),
+           'exit' : pygame.mixer.Sound('sounds/Exit.wav') }
 
 class Defaults():
     def __init__(self) -> None:
