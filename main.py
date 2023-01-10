@@ -2,6 +2,7 @@ import sys, pygame
 from pygame.locals import *
 from main_setup import defaults, screens, sounds
 import bullets
+import math
 
 pygame.init()
 
@@ -16,6 +17,7 @@ key_debounce = False
 clock = d.clock
 pygame.time.set_timer(apply_pattern_event, 50)
 button_pos = 0
+focus_timer = 0
 
 def handle_menu_selection(y_axis):
     global key_debounce
@@ -44,11 +46,21 @@ def axis(keys) -> list:
     return [x_axis, y_axis]
 
 def game_loop():
+    global focus_timer
     focus = keys[pygame.K_LSHIFT]
     player.move(x_axis, y_axis, focus)
     player.check_hitbox(bullets.getBullets())
     bullets.getBullets().update()
     bullets.getBullets().draw(screen)
+    if focus:
+        if focus_timer == 360:
+            focus_timer = 0 
+        focus_timer += 1 
+        focus_rect = d.focus_image.get_rect()
+        focus_rect.center = player.position.center
+        d.focus_image = pygame.transform.rotate(d.focus_image, focus_timer)
+        screen.blit(d.focus_image, focus_rect)
+        
     screen.blit(player.image, player.position)
     screen.blit(enemy.image, enemy.rect.topleft)
     if focus:

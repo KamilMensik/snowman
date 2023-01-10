@@ -22,6 +22,7 @@ class Defaults():
         self.apply_pattern_event = pygame.USEREVENT + 1
         self.clock = pygame.time.Clock()
         self.current_screen = screens.MENU
+        self.focus_image = pygame.image.load('sprites/focus.png').convert_alpha()
 
 def defaults():
     return data
