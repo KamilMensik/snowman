@@ -30,10 +30,18 @@ class SmallEnemy(pygame.sprite.Sprite):
     def update(self, should_animate) -> None:
         self.position += self.velocity
         self.rect.center = self.position
+        self.check_hitbox()
         if should_animate: self.animate()
 
+    def receive_damage(self):
+        self.hp -= 1
+        if self.hp <= 0:
+            self.kill()
     def check_hitbox(self):
-        return
+        for i in bullets.player_bullets:
+            if pygame.Rect.colliderect(self.rect, i.rect):
+                i.kill()
+                self.receive_damage()
 
     def animate(self):
         self.animation_frame += 1
