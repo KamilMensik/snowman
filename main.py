@@ -1,8 +1,9 @@
 import sys, pygame
 from pygame.locals import *
 from main_setup import defaults, screens, sounds
-import bullets
+from bullets import Bullet, bullets, player_bullets
 import math
+from small_enemy import SmallEnemy, small_enemies
 
 pygame.init()
 
@@ -13,11 +14,17 @@ player = d.player
 enemy = d.enemy
 apply_pattern_event = d.apply_pattern_event
 key_input_debounce = pygame.USEREVENT + 2
+key_shoot_debounce = pygame.USEREVENT + 4
 key_debounce = False
 clock = d.clock
 pygame.time.set_timer(apply_pattern_event, 50)
+pygame.time.set_timer(d.small_enemy_animation_event, 100)
 button_pos = 0
 focus_timer = 0
+can_shoot = True
+
+for i in range(3):
+    SmallEnemy('enemy_marshmellow.txt', i * 120)
 
 def handle_menu_selection(y_axis):
     global key_debounce
@@ -47,11 +54,22 @@ def axis(keys) -> list:
 
 def game_loop():
     global focus_timer
+    global should_animate
+    global can_shoot
+
     focus = keys[pygame.K_LSHIFT]
     player.move(x_axis, y_axis, focus)
-    player.check_hitbox(bullets.getBullets())
-    bullets.getBullets().update()
-    bullets.getBullets().draw(screen)
+    if keys[pygame.K_SPACE] and can_shoot:
+        can_shoot = False
+        pygame.time.set_timer(key_shoot_debounce, 150)
+        player.shoot()
+    bullets.update()
+    player_bullets.update()
+    player.check_hitbox(bullets)
+    bullets.draw(screen)
+    player_bullets.draw(screen)
+    small_enemies.update(should_animate)
+    small_enemies.draw(screen)
     if focus:
         if focus_timer == 360:
             focus_timer = 0 
@@ -67,10 +85,13 @@ def game_loop():
         pygame.draw.circle(screen, (255, 255, 255), player.hitbox, player.hitbox_radius - 1, 5)
 
 while True:
+    should_animate = False
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
         if event.type == apply_pattern_event and d.current_screen == screens.GAME: enemy.applyPattern(player)
         if event.type == key_input_debounce: key_debounce = False
+        if event.type == d.small_enemy_animation_event: should_animate = True
+        if event.type == key_shoot_debounce: can_shoot = True
     keys = pygame.key.get_pressed()
     x_axis, y_axis = axis(keys)
 

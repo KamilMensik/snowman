@@ -20,6 +20,7 @@ class Defaults():
         self.player = Player(self.player_image, 5)
         self.enemy = Enemy(120)
         self.apply_pattern_event = pygame.USEREVENT + 1
+        self.small_enemy_animation_event = pygame.USEREVENT + 3
         self.clock = pygame.time.Clock()
         self.current_screen = screens.MENU
         self.focus_image = pygame.image.load('sprites/focus.png').convert_alpha()

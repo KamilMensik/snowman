@@ -34,3 +34,6 @@ class Player(object):
         x_axis, y_axis = self.check_boundaries(self.position, x_axis, y_axis)
         self.position = self.position.move(self.speed * x_axis, self.speed * y_axis)
         self.hitbox = (self.position.center)
+    
+    def shoot(self):
+        bullets.Bullet(270, 10, self.position.center, type = 'player')
