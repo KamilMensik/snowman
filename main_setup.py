@@ -5,7 +5,7 @@ from enemy import Enemy
 from enum import Enum
 
 pygame.mixer.init()
-screens = Enum('Screens', ['GAME', 'CREDITS', 'QUIT', 'MENU'])
+screens = Enum('Screens', ['GAME', 'CREDITS', 'QUIT', 'MENU', 'DIALOGUE'])
 sounds = { 'browse' : pygame.mixer.Sound('sounds/Browse.wav'),
            'game_start' : pygame.mixer.Sound('sounds/Game_start.wav'),
            'proceed' : pygame.mixer.Sound('sounds/Proceed.wav'),

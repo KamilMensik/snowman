@@ -2,8 +2,8 @@ import sys, pygame
 from pygame.locals import *
 from main_setup import defaults, screens, sounds
 from bullets import Bullet, bullets, player_bullets
-import math
 from small_enemy import SmallEnemy, small_enemies
+import dialogue
 
 pygame.init()
 
@@ -22,6 +22,7 @@ pygame.time.set_timer(d.small_enemy_animation_event, 100)
 button_pos = 0
 focus_timer = 0
 can_shoot = True
+dialog = dialogue.Dialogue('test_dialogue.txt')
 
 for i in range(3):
     SmallEnemy('enemy_marshmellow.txt', i * 120)
@@ -35,8 +36,8 @@ def handle_menu_selection(y_axis):
         sounds['browse'].play()
         button_pos += y_axis
         if button_pos < 0: 
-            button_pos = len(screens) -2
-        if button_pos > len(screens) -2:
+            button_pos = len(screens) -3
+        if button_pos > len(screens) -3:
             button_pos = 0
         pygame.time.set_timer(key_input_debounce, 150, 1)
 
@@ -46,6 +47,19 @@ def draw_text(text, size, x, y):
     text_rect = text_surface.get_rect()
     text_rect.center = (x, y)
     screen.blit(text_surface, text_rect)
+
+def dialogue_loop():
+    global key_debounce
+
+    if dialog.end:
+        d.current_screen = screens.GAME
+    if (keys[pygame.K_SPACE] or keys[pygame.K_RETURN]) and key_debounce == False :
+        key_debounce = True
+        dialog.next_line()
+        pygame.time.set_timer(key_input_debounce, 250, 1)
+    draw_text(dialog.text, 20, 600, 600)
+    screen.blit(dialog.char_left.image, dialog.char_left.rect)
+    screen.blit(dialog.char_right.image, dialog.char_right.rect)
 
 def axis(keys) -> list:
     x_axis = (keys[pygame.K_RIGHT] or keys[pygame.K_d]) - (keys[pygame.K_LEFT] or keys[pygame.K_a])
@@ -93,6 +107,8 @@ while True:
         if event.type == d.small_enemy_animation_event: should_animate = True
         if event.type == key_shoot_debounce: can_shoot = True
     keys = pygame.key.get_pressed()
+    if keys[pygame.K_m]:
+        d.current_screen = screens.DIALOGUE
     x_axis, y_axis = axis(keys)
 
     screen.fill(d.BLACK)
@@ -118,5 +134,7 @@ while True:
                     case other:
                         sounds['proceed'].play()
                 d.current_screen = screens(button_pos+1)
+        case screens.DIALOGUE:
+            dialogue_loop()
     pygame.display.flip()
     clock.tick(90)
