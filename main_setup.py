@@ -18,7 +18,6 @@ class Defaults():
         self.screen = pygame.display.set_mode(self.size)
         self.player_image = pygame.image.load('sprites/image.gif').convert_alpha()
         self.player = Player(self.player_image, 5)
-        self.enemy = Enemy(120)
         self.apply_pattern_event = pygame.USEREVENT + 1
         self.small_enemy_animation_event = pygame.USEREVENT + 3
         self.clock = pygame.time.Clock()

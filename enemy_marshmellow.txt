@@ -1,4 +1,4 @@
-{ 'hp' : 10, 
+{ 'hp' : 1, 
   'attacks' : ['ring'],
   'name' : 'enemy_marshmellow',
   'speed' : 1 }

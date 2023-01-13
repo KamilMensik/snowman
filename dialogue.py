@@ -15,18 +15,19 @@ class Character():
         self.rect = self.image.get_rect().move(position)
 
 class Dialogue():
-    def __init__(self, dialogue) -> None:
-        self.data = eval('\t'.join([line.strip() for line in open(dialogue).readlines()]))
-        self.char_left = Character(self.data[0][0], self.data[0][1], (0, 400))
-        self.char_right = Character(self.data[1][0], self.data[1][1], (1000, 400))
+    def __init__(self) -> None:
+        self.data = eval('\t'.join([line.strip() for line in open('dialogues.txt').readlines()]))
+        self.char_left = Character(self.data[0][0][0], self.data[0][0][1], (0, 400))
+        self.char_right = Character(self.data[0][1][0], self.data[0][1][1], (1000, 400))
         self.text = ''
+        self.level = 0
         self.page = 0
         self.end = False
         self.next_line()
 
     def next_line(self):
         try:
-            line = self.data[self.page+2]
+            line = self.data[self.level][self.page+2]
             character = None
             match line.get('side'):
                 case 'left':
@@ -38,5 +39,3 @@ class Dialogue():
             self.page += 1
         except IndexError:
             self.end = True
-
-print(sprites)
