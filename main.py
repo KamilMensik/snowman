@@ -67,9 +67,12 @@ def dialogue_loop():
             key_debounce = True
             dialog.next_line()
             pygame.time.set_timer(key_input_debounce, 250, 1)
+        dialog.char_left.draw(screen)
+        dialog.char_right.draw(screen)
+        pygame.draw.rect(screen, (255, 0, 0), (300, 500, 600, 200), 1000)
+        pygame.draw.rect(screen, (0, 255, 0), (300, 500, 600, 200), 2)
         draw_text(dialog.text, 20, 600, 600)
-        screen.blit(dialog.char_left.image, dialog.char_left.rect)
-        screen.blit(dialog.char_right.image, dialog.char_right.rect)
+        draw_text(dialog.char_name, 15, 400, 520)
 
 def axis(keys) -> list:
     x_axis = (keys[pygame.K_RIGHT] or keys[pygame.K_d]) - (keys[pygame.K_LEFT] or keys[pygame.K_a])
