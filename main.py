@@ -7,7 +7,10 @@ from points import points
 
 def level_finish():
     global current_screen
+    global key_debounce
 
+    key_debounce = True
+    pygame.time.set_timer(key_input_debounce, 400, 1)
     dialog.level += 1
     dialog.page = 0
     dialog.end = False

@@ -16,23 +16,42 @@ for i in os.listdir('sprites/small_enemies'):
         sprites[i].append(pygame.image.load(f'sprites/small_enemies/{i}/{j}').convert_alpha())
 
 class SmallEnemy(pygame.sprite.Sprite):
-    def __init__(self, data_file, position_x, position_y) -> None:
+    def __init__(self, data_file, position_s, position_f) -> None:
         pygame.sprite.Sprite.__init__(self)
         data = eval('\t'.join([line.strip() for line in open(data_file).readlines()]))
         self.hp = data.get('hp')
-        self.velocity = Vector2(0 * data.get('speed'), 0)
+        self.finish_pos = position_f
+        self.velocity = Vector2(0.1 * data.get('speed'), 0).rotate(math.degrees(math.atan2((position_f[1] - position_s[1]), position_f[0] - position_s[0]))) * 5
         self.attacks = data.get('attacks')
+        self.delay = data.get('delay')
         self.name = data.get('name')
         self.image = sprites[self.name][0]
-        self.rect = self.image.get_rect().move(position_x, position_y)
-        self.position = Vector2(self.rect.center)
+        self.rect = self.image.get_rect()
+        self.position = Vector2(position_s)
         self.animation_frame = 0
+        self.finished_moving = False
+        self.attack_delay = 0
         small_enemies.add(self)
 
+    def ring(self, number_of_bullets: int, bullet_speed: int,  offset_angle: int = 0) -> None:
+        angle = 360/number_of_bullets
+        for i in range(number_of_bullets):
+            bullets.Bullet(angle*i + offset_angle, bullet_speed, self.position)
+
     def update(self, should_animate) -> None:
-        self.position += self.velocity
-        self.rect.center = self.position
         self.check_hitbox()
+        
+        if not self.finished_moving:
+            if math.sqrt((self.position.x - self.finish_pos[0]) ** 2 + (self.finish_pos[1] - self.position.y) ** 2) < 5:
+                self.finished_moving = True
+            self.position += self.velocity
+            self.rect.center = self.position
+        else:
+            if self.attack_delay <= 0:
+                self.attack_delay = self.delay
+                self.ring(15, 4, 0)
+            else:
+                self.attack_delay -= 1
         if should_animate: self.animate()
 
     def receive_damage(self):
@@ -54,5 +73,5 @@ class SmallEnemy(pygame.sprite.Sprite):
         frame = self.animation_frame
         self.image = sprites[self.name][frame]
 
-def normal(position_x, position_y):
-    SmallEnemy('enemy_marshmellow.txt', position_x, position_y)
+def normal(position_s, position_f):
+    SmallEnemy('enemy_marshmellow.txt', position_s, position_f)
