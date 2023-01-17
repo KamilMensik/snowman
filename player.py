@@ -36,4 +36,4 @@ class Player(object):
         self.hitbox = (self.position.center)
     
     def shoot(self):
-        bullets.Bullet(270, 10, self.position.center, type = 'player')
+        bullets.Bullet(270, 25, self.position.center, type = 'player')

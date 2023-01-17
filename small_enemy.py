@@ -4,9 +4,10 @@ from pygame.math import Vector2
 import bullets
 import math
 import os
-
+import points
 small_enemies = pygame.sprite.Group()
 sprites = {}
+points_sprite = pygame.image.load('sprites/score.png').convert_alpha()
 
 for i in os.listdir('sprites/small_enemies'):
     sprites[i] = []
@@ -36,6 +37,7 @@ class SmallEnemy(pygame.sprite.Sprite):
     def receive_damage(self):
         self.hp -= 1
         if self.hp <= 0:
+            points.Point(self.position.x, self.position.y, points_sprite)
             self.kill()
     def check_hitbox(self):
         for i in bullets.player_bullets:

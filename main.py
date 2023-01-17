@@ -3,6 +3,7 @@ from pygame.locals import *
 from main_setup import *
 from bullets import Bullet, bullets, player_bullets
 from small_enemy import SmallEnemy, small_enemies
+from points import points
 
 def level_finish():
     global current_screen
@@ -105,12 +106,14 @@ def game_loop():
     player.move(x_axis, y_axis, focus)
     if keys[pygame.K_SPACE] and can_shoot:
         can_shoot = False
-        pygame.time.set_timer(key_shoot_debounce, 150)
+        pygame.time.set_timer(key_shoot_debounce, 50)
         player.shoot()
     bullets.update()
     player_bullets.update()
     player.check_hitbox(bullets)
     bullets.draw(screen)
+    points.update()
+    points.draw(screen)
     player_bullets.draw(screen)
     small_enemies.update(should_animate)
     small_enemies.draw(screen)
