@@ -8,6 +8,7 @@ import points
 small_enemies = pygame.sprite.Group()
 sprites = {}
 points_sprite = pygame.image.load('sprites/score.png').convert_alpha()
+hit = pygame.mixer.Sound('sounds/hit.wav')
 
 for i in os.listdir('sprites/small_enemies'):
     sprites[i] = []
@@ -36,6 +37,7 @@ class SmallEnemy(pygame.sprite.Sprite):
 
     def receive_damage(self):
         self.hp -= 1
+        hit.play()
         if self.hp <= 0:
             points.Point(self.position.x, self.position.y, points_sprite)
             self.kill()
