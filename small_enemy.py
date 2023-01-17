@@ -7,7 +7,7 @@ import os
 import points
 small_enemies = pygame.sprite.Group()
 sprites = {}
-points_sprite = pygame.image.load('sprites/score.png').convert_alpha()
+points_sprite = pygame.transform.scale(pygame.image.load('sprites/score.png').convert_alpha(), (16, 16))
 
 for i in os.listdir('sprites/small_enemies'):
     sprites[i] = []

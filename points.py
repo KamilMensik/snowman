@@ -12,9 +12,8 @@ class Point(pygame.sprite.Sprite):
 
   
     def update(self) -> None:
-        while True:
-            if self.rect.x <= -50 or self.rect.x >= 1250 or self.rect.y <= -50 or self.rect.y >= 850:
-                self.kill()
-            self.rect.y -=1
+        if self.rect.x <= -50 or self.rect.x >= 1250 or self.rect.y <= -50 or self.rect.y >= 850:
+            self.kill()
+        self.rect.y +=1.5
 
 
