@@ -1,38 +1,17 @@
 import sys, pygame
 from pygame.locals import *
-from main_setup import defaults, screens, sounds
+from main_setup import *
 from bullets import Bullet, bullets, player_bullets
 from small_enemy import SmallEnemy, small_enemies
-import dialogue
-from levels import Levels
-
-pygame.init()
-
-# Variables
-d = defaults()
-screen = d.screen
-player = d.player
-apply_pattern_event = d.apply_pattern_event
-key_input_debounce = pygame.USEREVENT + 2
-key_shoot_debounce = pygame.USEREVENT + 4
-apply_level_event = pygame.USEREVENT + 5
-key_debounce = False
-clock = d.clock
-pygame.time.set_timer(apply_pattern_event, 50)
-pygame.time.set_timer(apply_level_event, 50)
-pygame.time.set_timer(d.small_enemy_animation_event, 100)
-button_pos = 0
-focus_timer = 0
-can_shoot = True
-dialog = dialogue.Dialogue()
-level = Levels()
 
 def level_finish():
+    global current_screen
+
     dialog.level += 1
     dialog.page = 0
     dialog.end = False
-    dialog.next_line()
-    d.current_screen = screens.DIALOGUE
+    dialog.setup()
+    current_screen = screens.DIALOGUE
 
 def handle_menu_selection(y_axis):
     global key_debounce
@@ -57,11 +36,12 @@ def draw_text(text, size, x, y):
 
 def dialogue_loop():
     global key_debounce
+    global current_screen
 
     if dialog.end:
         level.level = dialog.level
         level.iteration = 0
-        d.current_screen = screens.GAME
+        current_screen = screens.GAME
     else:
         if (keys[pygame.K_SPACE] or keys[pygame.K_RETURN]) and key_debounce == False :
             key_debounce = True
@@ -79,6 +59,38 @@ def axis(keys) -> list:
     y_axis = (keys[pygame.K_DOWN] or keys[pygame.K_s]) - (keys[pygame.K_UP] or keys[pygame.K_w])
     return [x_axis, y_axis]
 
+def menu_loop():
+    global current_screen
+    global key_debounce
+
+    screen.blit(menu_image, (0,0))
+    handle_menu_selection(y_axis)
+    pygame.draw.circle(screen, (255, 255, 255), (800, button_pos * 100 + 500), 10, 10)
+    draw_text('MANHA-TAN', 50, 950, 400)
+    draw_text('PLAY', 40, 950, 500)
+    draw_text('ABOUT', 40, 950, 600)
+    draw_text('QUIT', 40, 950, 700)
+    if keys[pygame.K_RETURN]:
+        match button_pos:
+            case 0:
+                sounds['game_start'].play()
+                level.level = 0
+                level.iteration = 0
+                level.game_end = False
+                level.end = False
+                dialog.level = 0
+                dialog.page = 0
+                dialog.end = False
+                dialog.setup()
+                key_debounce = True
+                pygame.time.set_timer(key_input_debounce, 400, 1)
+                current_screen = screens.DIALOGUE
+            case 2:
+                sounds['exit'].play()
+                current_screen = screens.QUIT
+            case other:
+                sounds['proceed'].play()
+                current_screen = screens.CREDITS
 def game_loop():
     global focus_timer
     global should_animate
@@ -106,9 +118,9 @@ def game_loop():
         if focus_timer == 360:
             focus_timer = 0 
         focus_timer += 30
-        focus_rect = d.focus_image.get_rect()
+        focus_rect = focus_image.get_rect()
         focus_rect.center = player.position.center
-        screen.blit(d.focus_image, focus_rect)
+        screen.blit(focus_image, focus_rect)
         
     screen.blit(player.image, player.position)
     if focus:
@@ -120,48 +132,25 @@ while True:
     should_apply_level = False
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
-        #if event.type == apply_pattern_event and d.current_screen == screens.GAME: enemy.applyPattern(player)
+        #if event.type == apply_pattern_event and current_screen == screens.GAME: enemy.applyPattern(player)
         if event.type == key_input_debounce: key_debounce = False
-        if event.type == d.small_enemy_animation_event: should_animate = True
+        if event.type == small_enemy_animation_event: should_animate = True
         if event.type == key_shoot_debounce: can_shoot = True
         if event.type == apply_level_event: should_apply_level = True
     keys = pygame.key.get_pressed()
     x_axis, y_axis = axis(keys)
 
-    screen.fill(d.BLACK)
+    screen.fill(BLACK)
 
     if level.game_end:
-        d.current_screen = screens.MENU
+        current_screen = screens.MENU
         level.game_end = False
 
-    match d.current_screen:
+    match current_screen:
         case screens.GAME:
             game_loop()
         case screens.MENU:
-            image = pygame.transform.scale(pygame.image.load('sprites/remilia_background.jpg'), (1200, 800))
-            screen.blit(image, (0,0))
-            handle_menu_selection(y_axis)
-            pygame.draw.circle(screen, (255, 255, 255), (800, button_pos * 100 + 500), 10, 10)
-            draw_text('MANHA-TAN', 50, 950, 400)
-            draw_text('PLAY', 40, 950, 500)
-            draw_text('ABOUT', 40, 950, 600)
-            draw_text('QUIT', 40, 950, 700)
-            if keys[pygame.K_RETURN]:
-                match button_pos:
-                    case 0:
-                        sounds['game_start'].play()
-                        level.level = 0
-                        level.iteration = 0
-                        dialog.level = 0
-                        dialog.page = 0
-                        dialog.end = False
-                        d.current_screen = screens.DIALOGUE
-                    case 2:
-                        sounds['exit'].play()
-                        d.current_screen = screens.QUIT
-                    case other:
-                        sounds['proceed'].play()
-                        d.current_screen = screens.CREDITS
+            menu_loop()
         case screens.DIALOGUE:
             dialogue_loop()
     pygame.display.flip()

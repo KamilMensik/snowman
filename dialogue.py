@@ -40,7 +40,6 @@ class Dialogue():
         self.level = 0
         self.page = 0
         self.end = False
-        self.next_line()
 
     def next_line(self):
         try:
@@ -58,3 +57,8 @@ class Dialogue():
             self.page += 1
         except IndexError:
             self.end = True
+
+    def setup(self):
+        self.char_left.image = sprites.get(self.data[self.level][0][0]).get(self.data[self.level][0][1])
+        self.char_right.image = sprites.get(self.data[self.level][1][0]).get(self.data[self.level][1][1])
+        self.next_line()
