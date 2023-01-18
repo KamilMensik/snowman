@@ -78,6 +78,7 @@ def menu_loop():
         match button_pos:
             case 0:
                 sounds['game_start'].play()
+                pygame.mixer.Sound('sounds/master spark.mp3').play()
                 level.level = 0
                 level.iteration = 0
                 level.game_end = False
