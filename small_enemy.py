@@ -9,6 +9,8 @@ small_enemies = pygame.sprite.Group()
 sprites = {}
 points_sprite = pygame.image.load('sprites/score.png').convert_alpha()
 hit = pygame.mixer.Sound('sounds/hit.wav')
+kill = pygame.mixer.Sound('sounds/kill.wav')
+attack = pygame.mixer.Sound('sounds/shoot.wav')
 
 for i in os.listdir('sprites/small_enemies'):
     sprites[i] = []
@@ -50,6 +52,7 @@ class SmallEnemy(pygame.sprite.Sprite):
             if self.attack_delay <= 0:
                 self.attack_delay = self.delay
                 self.ring(15, 4, 0)
+                attack.play()
             else:
                 self.attack_delay -= 1
         if should_animate: self.animate()
@@ -58,6 +61,7 @@ class SmallEnemy(pygame.sprite.Sprite):
         self.hp -= 1
         hit.play()
         if self.hp <= 0:
+            kill.play()
             points.Point(self.position.x, self.position.y, points_sprite)
             self.kill()
     def check_hitbox(self):
