@@ -35,6 +35,12 @@ class SmallEnemy(pygame.sprite.Sprite):
         self.attack_delay = 0
         small_enemies.add(self)
 
+    def attack(self):
+        match self.attacks[0]:
+            case 'ring':
+                self.attacks.pop(0)
+                self.ring(15, 4, 0)
+
     def ring(self, number_of_bullets: int, bullet_speed: int,  offset_angle: int = 0) -> None:
         angle = 360/number_of_bullets
         for i in range(number_of_bullets):
@@ -49,10 +55,14 @@ class SmallEnemy(pygame.sprite.Sprite):
             self.position += self.velocity
             self.rect.center = self.position
         else:
-            if self.attack_delay <= 0:
+            if self.attack_delay <= 0 and self.attacks != []:
                 self.attack_delay = self.delay
-                self.ring(15, 4, 0)
+                self.attack()
                 attack.play()
+            elif self.attacks == []:
+                self.position += Vector2(0,5)
+                self.rect.center = self.position
+                if self.position[1] > 850: self.kill()
             else:
                 self.attack_delay -= 1
         if should_animate: self.animate()
