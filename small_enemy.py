@@ -5,12 +5,14 @@ import bullets
 import math
 import os
 import points
+import copy
 small_enemies = pygame.sprite.Group()
 sprites = {}
 points_sprite = pygame.image.load('sprites/score.png').convert_alpha()
 hit = pygame.mixer.Sound('sounds/hit.wav')
 kill = pygame.mixer.Sound('sounds/kill.wav')
 attack = pygame.mixer.Sound('sounds/shoot.wav')
+enemies_data = eval('\t'.join([line.strip() for line in open('enemies.txt').readlines()]))
 
 for i in os.listdir('sprites/small_enemies'):
     sprites[i] = []
@@ -18,9 +20,9 @@ for i in os.listdir('sprites/small_enemies'):
         sprites[i].append(pygame.image.load(f'sprites/small_enemies/{i}/{j}').convert_alpha())
 
 class SmallEnemy(pygame.sprite.Sprite):
-    def __init__(self, data_file, position_s, position_f) -> None:
+    def __init__(self, name, position_s, position_f, type= 'normal') -> None:
         pygame.sprite.Sprite.__init__(self)
-        data = eval('\t'.join([line.strip() for line in open(data_file).readlines()]))
+        data = copy.deepcopy(enemies_data.get(name))
         self.hp = data.get('hp')
         self.finish_pos = position_f
         self.velocity = Vector2(0.1 * data.get('speed'), 0).rotate(math.degrees(math.atan2((position_f[1] - position_s[1]), position_f[0] - position_s[0]))) * 5
@@ -33,7 +35,9 @@ class SmallEnemy(pygame.sprite.Sprite):
         self.animation_frame = 0
         self.finished_moving = False
         self.attack_delay = 0
+        self.type = type
         small_enemies.add(self)
+        print(data)
 
     def attack(self):
         match self.attacks[0]:
@@ -55,16 +59,27 @@ class SmallEnemy(pygame.sprite.Sprite):
             self.position += self.velocity
             self.rect.center = self.position
         else:
-            if self.attack_delay <= 0 and self.attacks != []:
-                self.attack_delay = self.delay
-                self.attack()
-                attack.play()
-            elif self.attacks == []:
-                self.position += Vector2(0,5)
-                self.rect.center = self.position
-                if self.position[1] > 850: self.kill()
-            else:
-                self.attack_delay -= 1
+            match self.type:
+                case 'normal':
+                    if self.attack_delay <= 0 and self.attacks != []:
+                        self.attack_delay = self.delay
+                        self.attack()
+                        attack.play()
+                    elif self.attacks == []:
+                        self.position += Vector2(0,5)
+                        self.rect.center = self.position
+                        if self.position[1] > 850: self.kill()
+                    else:
+                        self.attack_delay -= 1
+                case 'cola':
+                    if self.attack_delay <= 0 and self.attacks != []:
+                        self.attack_delay = self.delay
+                        self.attack()
+                        attack.play()
+                    elif self.attacks == []:
+                        self.kill()
+                    else:
+                        self.attack_delay -= 1
         if should_animate: self.animate()
 
     def receive_damage(self):
@@ -87,5 +102,8 @@ class SmallEnemy(pygame.sprite.Sprite):
         frame = self.animation_frame
         self.image = sprites[self.name][frame]
 
-def normal(position_s, position_f):
-    SmallEnemy('enemy_marshmellow.txt', position_s, position_f)
+def marshmellow(position_s, position_f):
+    SmallEnemy('marshmellow', position_s, position_f)
+
+def cola(position_s, position_f):
+    SmallEnemy('cola', position_s, position_f, 'cola')

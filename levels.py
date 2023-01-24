@@ -1,4 +1,4 @@
-from small_enemy import normal
+from small_enemy import marshmellow, cola
 
 leveldata = data = eval('\t'.join([line.strip() for line in open('levels.txt').readlines()]))
 
@@ -17,9 +17,11 @@ class Levels():
             try:
                 for key, value in leveldata[self.level][self.iteration].items():
                     match key:
-                        case 'normal':
-                            normal(value[0], value[1])
+                        case 'marshmellow':
+                            marshmellow(value[0], value[1])
                             self.iteration += 1
+                        case 'cola':
+                            cola(value[0], value[1])
                         case 'wait':
                             self.wait = value
                             self.iteration += 1
