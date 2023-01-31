@@ -37,7 +37,6 @@ class SmallEnemy(pygame.sprite.Sprite):
         self.attack_delay = 0
         self.type = type
         small_enemies.add(self)
-        print(data)
 
     def attack(self):
         match self.attacks[0]:
@@ -58,6 +57,7 @@ class SmallEnemy(pygame.sprite.Sprite):
                 self.finished_moving = True
             self.position += self.velocity
             self.rect.center = self.position
+            if self.type == 'cola': print(self.position)
         else:
             match self.type:
                 case 'normal':

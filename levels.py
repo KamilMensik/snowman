@@ -22,6 +22,7 @@ class Levels():
                             self.iteration += 1
                         case 'cola':
                             cola(value[0], value[1])
+                            self.iteration += 1
                         case 'wait':
                             self.wait = value
                             self.iteration += 1
