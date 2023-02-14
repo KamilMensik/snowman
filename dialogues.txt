@@ -12,7 +12,7 @@
         ['test_character2', 'happy'],
         { 'side' : 'left', 'character': 'test_character', 'emotion': 'happy',
         'text' : 'You completed the game!' },
-        { 'side' : 'right', 'character': 'test_character2', 'emotion': 'surprised',
+        { 'side' : 'right', 'character': 'test_character2', 'emotion': 'happy',
         'text' : 'Well played!' },
     ]
 ]

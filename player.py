@@ -10,11 +10,12 @@ class Player(object):
         self.position = image.get_rect().move(0, 0)
         self.hitbox = (self.position.center)
         self.hitbox_radius = 6
+        self.points = 0
 
     def check_boundaries(self, position, x_axis, y_axis) -> list:
         if x_axis < 0 and position.x <= -25:
             x_axis = 0
-        if x_axis > 0 and position.x >= 1175:
+        if x_axis > 0 and position.x >= 775:
             x_axis = 0
         if y_axis < 0 and position.y <= -25:
             y_axis = 0

@@ -100,6 +100,7 @@ def game_loop():
     global should_animate
     global should_apply_level
     global can_shoot
+
     if should_apply_level:
         level.apply_spawn()
     if level.level %2 == 0:
@@ -116,7 +117,7 @@ def game_loop():
     player_bullets.update()
     player.check_hitbox(bullets)
     bullets.draw(screen)
-    points.update()
+    points.update(player)
     points.draw(screen)
     player_bullets.draw(screen)
     small_enemies.update(should_animate)
@@ -133,6 +134,9 @@ def game_loop():
     if focus:
         pygame.draw.circle(screen, (255, 0, 0), player.hitbox, player.hitbox_radius, 2)
         pygame.draw.circle(screen, (255, 255, 255), player.hitbox, player.hitbox_radius - 1, 5)
+
+    screen.fill("BLACK", (800, 0, 400, 800))
+    draw_text(f"Points: {player.points}", 20, 1000, 200)
 
 while True:
     should_animate = False
