@@ -70,7 +70,7 @@ def menu_loop():
     screen.blit(menu_image, (0,0))
     handle_menu_selection(y_axis)
     pygame.draw.circle(screen, (255, 255, 255), (800, button_pos * 100 + 500), 10, 10)
-    draw_text('MANHA-TAN', 50, 950, 400)
+    draw_text('DEMO', 50, 950, 400)
     draw_text('PLAY', 40, 950, 500)
     draw_text('ABOUT', 40, 950, 600)
     draw_text('QUIT', 40, 950, 700)
@@ -78,7 +78,6 @@ def menu_loop():
         match button_pos:
             case 0:
                 sounds['game_start'].play()
-                pygame.mixer.Sound('sounds/master spark.mp3').play()
                 level.level = 0
                 level.iteration = 0
                 level.game_end = False
@@ -108,7 +107,8 @@ def game_loop():
             level_finish()
     focus = keys[pygame.K_LSHIFT]
     player.move(x_axis, y_axis, focus)
-    if keys[pygame.K_SPACE] and can_shoot:
+    #if keys[pygame.K_SPACE] and can shoot:
+    if can_shoot:
         can_shoot = False
         pygame.time.set_timer(key_shoot_debounce, 50)
         player.shoot()
@@ -147,7 +147,7 @@ while True:
     keys = pygame.key.get_pressed()
     x_axis, y_axis = axis(keys)
 
-    screen.fill(BLACK)
+    screen.fill("BLUE")
 
     if level.game_end:
         current_screen = screens.MENU

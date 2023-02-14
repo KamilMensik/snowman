@@ -1,6 +1,6 @@
 { 'marshmellow':
-    { 'hp' : 7, 
-    'attacks' : ['ring', 'ring', 'ring'],
+    { 'hp' : 12, 
+    'attacks' : ['ring', 'ring', 'ring', 'ring'],
     'name' : 'enemy_marshmellow',
     'speed' : 7,
     'points' : 5,
