@@ -31,13 +31,6 @@ def handle_menu_selection(y_axis):
             button_pos = 0
         pygame.time.set_timer(key_input_debounce, 150, 1)
 
-def draw_text(text, size, x, y):
-    font = pygame.font.Font('fonts/04B.TTF', size)
-    text_surface = font.render(text, True, (255, 255, 255))
-    text_rect = text_surface.get_rect()
-    text_rect.center = (x, y)
-    screen.blit(text_surface, text_rect)
-
 def dialogue_loop():
     global key_debounce
     global current_screen
@@ -82,6 +75,10 @@ def menu_loop():
                 level.iteration = 0
                 level.game_end = False
                 level.end = False
+                player.health = 3
+                player.points = 0
+                player.position.center = (400, 750)
+                player.barrier = {}
                 dialog.level = 0
                 dialog.page = 0
                 dialog.end = False
@@ -89,6 +86,10 @@ def menu_loop():
                 key_debounce = True
                 pygame.time.set_timer(key_input_debounce, 400, 1)
                 current_screen = screens.DIALOGUE
+                for i in bullets:
+                    i.kill()
+                for i in small_enemies:
+                    i.kill()
             case 2:
                 sounds['exit'].play()
                 current_screen = screens.QUIT
@@ -100,6 +101,10 @@ def game_loop():
     global should_animate
     global should_apply_level
     global can_shoot
+    global current_screen
+
+    if player.health == 0:
+        current_screen = screens.MENU
 
     if should_apply_level:
         level.apply_spawn()
@@ -129,7 +134,13 @@ def game_loop():
         focus_rect = focus_image.get_rect()
         focus_rect.center = player.position.center
         screen.blit(focus_image, focus_rect)
-        
+    if player.barrier != {}:
+        print(player.barrier)
+        circle = pygame.draw.circle(screen, (255, 0, 0), player.barrier['position'], player.barrier['size'], 5)
+        for i in bullets:
+            if pygame.Rect.colliderect(circle, i.rect):
+                i.kill()
+
     screen.blit(player.image, player.position)
     if focus:
         pygame.draw.circle(screen, (255, 0, 0), player.hitbox, player.hitbox_radius, 2)
@@ -137,6 +148,7 @@ def game_loop():
 
     screen.fill("BLACK", (800, 0, 400, 800))
     draw_text(f"Points: {player.points}", 20, 1000, 200)
+    draw_health(player, 1000, 100)
 
 while True:
     should_animate = False

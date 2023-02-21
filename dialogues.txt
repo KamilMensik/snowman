@@ -1,10 +1,10 @@
 [
-    [   ['test_character', 'happy'],
-        ['test_character2', 'happy'],
-        { 'side' : 'right', 'character': 'test_character2', 'emotion': 'happy',
-        'text' : 'The game is still being worked on!' },
-        { 'side' : 'right', 'character': 'test_character2', 'emotion': 'happy',
-        'text' : 'And its content is subject to change!' },
+    [   ['karen', 'a_normal'],
+        ['calvin', 'normal'],
+        { 'side' : 'right', 'character': 'calvin', 'emotion': 'normal',
+        'text' : 'I am the spirit of this land, and I possessed this snowman.' },
+        { 'side' : 'left', 'character': 'karen', 'emotion': 'a_normal',
+        'text' : 'I wont call you the spirit of the land, so you will be Calvin the Smowman.' },
     
     ],
     [

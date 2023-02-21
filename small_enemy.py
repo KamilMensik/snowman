@@ -29,6 +29,7 @@ class SmallEnemy(pygame.sprite.Sprite):
         self.attacks = data.get('attacks')
         self.delay = data.get('delay')
         self.name = data.get('name')
+        self.points = data.get('points')
         self.image = sprites[self.name][0]
         self.rect = self.image.get_rect()
         self.position = Vector2(position_s)
@@ -87,7 +88,8 @@ class SmallEnemy(pygame.sprite.Sprite):
         hit.play()
         if self.hp <= 0:
             kill.play()
-            points.Point(self.position.x, self.position.y, points_sprite)
+            for _ in range(self.points):
+                points.Point(self.position.x, self.position.y, points_sprite)
             self.kill()
     def check_hitbox(self):
         for i in bullets.player_bullets:

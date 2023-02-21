@@ -16,6 +16,21 @@ screen = pygame.display.set_mode(size)
 import dialogue
 from levels import Levels
 
+# FUNCTIONS
+def draw_text(text, size, x, y):
+    font = pygame.font.Font('fonts/04B.TTF', size)
+    text_surface = font.render(text, True, (255, 255, 255))
+    text_rect = text_surface.get_rect()
+    text_rect.center = (x, y)
+    screen.blit(text_surface, text_rect)
+
+def draw_health(player, x, y):
+    font = pygame.font.Font('fonts/Segoe UI.ttf', 60)
+    text_surface = font.render('♡' * player.health, True, (255, 0, 0))
+    text_rect = text_surface.get_rect()
+    text_rect.center = (x, y)
+    screen.blit(text_surface, text_rect)
+
 # ENUMS
 screens = Enum('Screens', ['GAME', 'CREDITS', 'QUIT', 'MENU', 'DIALOGUE'])
 
