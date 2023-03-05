@@ -14,7 +14,7 @@ screen = pygame.display.set_mode(size)
 
 # IMPORTS NEEDED AFTER SCREEN
 import dialogue
-from levels import Levels
+from levels import Levels, backgrounds
 
 # FUNCTIONS
 def draw_text(text, size, x, y):
@@ -25,7 +25,7 @@ def draw_text(text, size, x, y):
     screen.blit(text_surface, text_rect)
 
 def draw_health(player, x, y):
-    font = pygame.font.Font('fonts/Segoe UI.ttf', 60)
+    font = pygame.font.Font('fonts/Segoe UI.ttf', 60, ucs4 = False)
     text_surface = font.render('♡' * player.health, True, (255, 0, 0))
     text_rect = text_surface.get_rect()
     text_rect.center = (x, y)
@@ -54,6 +54,8 @@ level = Levels()
 # GAME RELATED
 player = Player(player_image, 5)
 current_screen = screens.MENU
+game_backgrounds = backgrounds
+current_game_background = game_backgrounds['forest.jpg']
 
 # Variables
 key_debounce = False

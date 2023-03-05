@@ -1,5 +1,6 @@
 import pygame
 import os
+import textwrap
 
 sprites = {}
 
@@ -8,6 +9,11 @@ for i in os.listdir('sprites/for_dialogue'):
     for j in os.listdir(f'sprites/for_dialogue/{i}'):
         file_name = os.path.splitext(j)[0]
         sprites[i][file_name] = pygame.image.load(f'sprites/for_dialogue/{i}/{j}').convert_alpha()
+
+dialogue_backgrounds = {}
+
+for i in os.listdir('sprites/dialogue_backgrounds'):
+    dialogue_backgrounds[i] = pygame.image.load(f'sprites/dialogue_backgrounds/{i}').convert_alpha()
 
 class Character():
     def __init__(self, character, emotion, position) -> None:
@@ -40,21 +46,27 @@ class Dialogue():
         self.level = 0
         self.page = 0
         self.end = False
+        self.background = dialogue_backgrounds['snowy_plain.jpg']
 
     def next_line(self):
         try:
             line = self.data[self.level][self.page+2]
             character = None
-            match line.get('side'):
-                case 'left':
-                    character = self.char_left
-                case 'right':
-                    character = self.char_right
-            character.image = sprites.get(line.get('character')).get(line.get('emotion'))
-            self.char_name = line.get('character')
-            character.add_bounce()
-            self.text = line.get('text')
-            self.page += 1
+            if line.get('background'):
+                self.background = dialogue_backgrounds[line.get('background')]
+                self.page +=1
+                self.next_line()
+            else: 
+                match line.get('side'):
+                    case 'left':
+                        character = self.char_left
+                    case 'right':
+                        character = self.char_right
+                character.image = sprites.get(line.get('character')).get(line.get('emotion'))
+                self.char_name = line.get('character')
+                character.add_bounce()
+                self.text = textwrap.wrap(line.get('text'), 40, break_long_words=False)
+                self.page += 1
         except IndexError:
             self.end = True
 

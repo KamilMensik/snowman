@@ -1,6 +1,7 @@
 [
     [
-         {'wait': 2650},
+        {'background': 'plain.jpg'},
+        {'wait': 2650},
         {'marshmellow' : [(600, -50), (600, 300)]},
         {'wait': 2650},
         {'marshmellow' : [(300, -50), (300, 300)]},

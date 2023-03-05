@@ -40,6 +40,7 @@ def dialogue_loop():
         level.iteration = 0
         current_screen = screens.GAME
     else:
+        screen.blit(dialog.background, (0,0))
         if (keys[pygame.K_SPACE] or keys[pygame.K_RETURN]) and key_debounce == False :
             key_debounce = True
             dialog.next_line()
@@ -48,7 +49,8 @@ def dialogue_loop():
         dialog.char_right.draw(screen)
         pygame.draw.rect(screen, (255, 0, 0), (300, 500, 600, 200), 1000)
         pygame.draw.rect(screen, (0, 255, 0), (300, 500, 600, 200), 2)
-        draw_text(dialog.text, 20, 600, 600)
+        for i, text in enumerate(dialog.text):
+            draw_text(text, 19, 600, 575 + (i * 25))
         draw_text(dialog.char_name, 15, 400, 520)
 
 def axis(keys) -> list:
@@ -118,6 +120,7 @@ def game_loop():
         can_shoot = False
         pygame.time.set_timer(key_shoot_debounce, 50)
         player.shoot()
+    screen.blit(current_game_background, (0,0))
     bullets.update()
     player_bullets.update()
     player.check_hitbox(bullets)
@@ -135,7 +138,6 @@ def game_loop():
         focus_rect.center = player.position.center
         screen.blit(focus_image, focus_rect)
     if player.barrier != {}:
-        print(player.barrier)
         circle = pygame.draw.circle(screen, (255, 0, 0), player.barrier['position'], player.barrier['size'], 5)
         for i in bullets:
             if pygame.Rect.colliderect(circle, i.rect):
@@ -168,6 +170,10 @@ while True:
     if level.game_end:
         current_screen = screens.MENU
         level.game_end = False
+
+    if level.change_background:
+        current_game_background = game_backgrounds[level.change_background]
+        level.change_background = False
 
     match current_screen:
         case screens.GAME:

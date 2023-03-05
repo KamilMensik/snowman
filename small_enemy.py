@@ -58,7 +58,6 @@ class SmallEnemy(pygame.sprite.Sprite):
                 self.finished_moving = True
             self.position += self.velocity
             self.rect.center = self.position
-            if self.type == 'cola': print(self.position)
         else:
             match self.type:
                 case 'normal':
