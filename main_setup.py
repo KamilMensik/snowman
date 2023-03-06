@@ -5,6 +5,7 @@ from pygame.locals import *
 from player import Player
 from enum import Enum
 from hollow import textOutline
+from music_handler import MusicHandler
 # PYGAME MODULES INITIALIZATIONS
 pygame.init()
 pygame.mixer.init()
@@ -61,6 +62,7 @@ BLACK = 0, 0, 0
 clock = pygame.time.Clock()
 dialog = dialogue.Dialogue()
 level = Levels()
+MusicHandler = MusicHandler()
 
 # GAME RELATED
 player = Player(player_image, 5)

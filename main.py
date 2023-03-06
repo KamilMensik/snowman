@@ -61,6 +61,9 @@ def menu_loop():
     global current_screen
     global key_debounce
 
+    if MusicHandler.song != 'sounds/songs/Menu_Theme.mp3':
+        MusicHandler.change_music('Menu_Theme')
+
     screen.blit(menu_image, (0,0))
     screen.blit(menu_char_image, (100, 100))
     handle_menu_selection(y_axis)
@@ -73,6 +76,7 @@ def menu_loop():
         match button_pos:
             case 0:
                 sounds['game_start'].play()
+                MusicHandler.change_music('Talking')
                 level.level = 0
                 level.iteration = 0
                 level.game_end = False
@@ -180,6 +184,7 @@ while True:
     x_axis, y_axis = axis(keys)
 
     screen.fill("BLUE")
+    MusicHandler.tick()
 
     if level.game_end:
         current_screen = screens.MENU
