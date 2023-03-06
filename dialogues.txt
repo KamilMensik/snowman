@@ -6,7 +6,6 @@
         'text' : 'I am the spirit of this land, and I possessed this snowman.' },
         { 'side' : 'left', 'character': 'karen', 'emotion': 'a_normal',
         'text' : 'I wont call you the spirit of the land, so henceforth you shall be Calvin the Smowman.' },
-        {'background' : 'volcano.jpg'},
         { 'side' : 'right', 'character': 'calvin', 'emotion': 'normal',
         'text' : 'I hate this name...' },
         { 'side' : 'left', 'character': 'karen', 'emotion': 'a_angry',
@@ -73,11 +72,19 @@
         'text' : 'NOOOOOOOOOO' }
     ],
     [
-        ['test_character', 'happy'],
-        ['test_character2', 'happy'],
-        { 'side' : 'left', 'character': 'test_character', 'emotion': 'happy',
+        ['karen', 'a_angry'],
+        ['skittles', 'happy'],
+        { 'side' : 'left', 'character': 'karen', 'emotion': 'a_angry',
+        'text' : 'Get out of my way!' },
+        { 'side' : 'right', 'character': 'skittles', 'emotion': 'normal',
+        'text' : 'How about a no?' }
+    ],
+    [
+        ['karen', 'a_happy'],
+        ['skittles', 'happy'],
+        { 'side' : 'left', 'character': 'karen', 'emotion': 'a_happy',
         'text' : 'You completed the game!' },
-        { 'side' : 'right', 'character': 'test_character2', 'emotion': 'happy',
+        { 'side' : 'right', 'character': 'skittles', 'emotion': 'happy',
         'text' : 'Well played!' }
     ]
 ]

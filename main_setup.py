@@ -3,9 +3,8 @@
 import sys, pygame
 from pygame.locals import *
 from player import Player
-from enemy import Enemy
 from enum import Enum
-
+from hollow import textOutline
 # PYGAME MODULES INITIALIZATIONS
 pygame.init()
 pygame.mixer.init()
@@ -17,15 +16,25 @@ import dialogue
 from levels import Levels, backgrounds
 
 # FUNCTIONS
-def draw_text(text, size, x, y):
-    font = pygame.font.Font('fonts/04B.TTF', size)
-    text_surface = font.render(text, True, (255, 255, 255))
+def draw_text(text, size, x, y, font = 'fonts/04B.TTF', outline = False):
+    font = pygame.font.Font(font, size)
+    if outline:
+        text_surface = textOutline(font, text, (255, 255, 255), (1,1,1))
+    else:
+        text_surface = font.render(text, True, (255,255,255))
+
     text_rect = text_surface.get_rect()
     text_rect.center = (x, y)
     screen.blit(text_surface, text_rect)
 
+def draw_combo(player, x, y):
+    bar_completed = int(player.combo[1]/30)
+    bar = f'[{"+"*bar_completed}{"-"*(10-bar_completed)}]'
+    draw_text(f'{round(player.combo[0], 1)}x', 25, x, y, 'fonts/Monocraft.otf')
+    draw_text(bar, 25, x, y+25, 'fonts/Monocraft.otf')
+
 def draw_health(player, x, y):
-    font = pygame.font.Font('fonts/Segoe UI.ttf', 60, ucs4 = False)
+    font = pygame.font.Font('fonts/Segoe UI.ttf', 60)
     text_surface = font.render('♡' * player.health, True, (255, 0, 0))
     text_rect = text_surface.get_rect()
     text_rect.center = (x, y)
@@ -43,7 +52,9 @@ sounds = { 'browse' : pygame.mixer.Sound('sounds/Browse.wav'),
 # IMAGES
 focus_image = pygame.image.load('sprites/focus.png').convert_alpha()
 menu_image = pygame.transform.scale(pygame.image.load('sprites/remilia_background.jpg'), (1200, 800))
-player_image = pygame.image.load('sprites/image.gif').convert_alpha()
+player_image = pygame.image.load('sprites/mc_a.png').convert_alpha()
+menu_char_image = pygame.image.load('sprites/for_dialogue/calvin/normal.png').convert_alpha()
+d_box_image = pygame.transform.scale(pygame.image.load('sprites/d_box.png'), (700, 236))
 
 # CONSTANTS
 BLACK = 0, 0, 0

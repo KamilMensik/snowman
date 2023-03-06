@@ -15,7 +15,8 @@ class Point(pygame.sprite.Sprite):
 
     def check_collision(self, player):
         if pygame.Rect.colliderect(self.rect, player.position):
-            player.points += 1
+            player.points += round(100 * player.combo[0])
+            player.combo = [player.combo[0]+0.1, 300]
             self.kill()
   
     def update(self, player) -> None:

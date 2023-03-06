@@ -47,11 +47,10 @@ def dialogue_loop():
             pygame.time.set_timer(key_input_debounce, 250, 1)
         dialog.char_left.draw(screen)
         dialog.char_right.draw(screen)
-        pygame.draw.rect(screen, (255, 0, 0), (300, 500, 600, 200), 1000)
-        pygame.draw.rect(screen, (0, 255, 0), (300, 500, 600, 200), 2)
+        screen.blit(d_box_image, (250, 575))
         for i, text in enumerate(dialog.text):
-            draw_text(text, 19, 600, 575 + (i * 25))
-        draw_text(dialog.char_name, 15, 400, 520)
+            draw_text(text, 30, 600, 650 + (i * 30), 'fonts/Aller_Rg.ttf', True)
+        draw_text(dialog.char_name, 15, 340, 597, outline=True)
 
 def axis(keys) -> list:
     x_axis = (keys[pygame.K_RIGHT] or keys[pygame.K_d]) - (keys[pygame.K_LEFT] or keys[pygame.K_a])
@@ -63,9 +62,10 @@ def menu_loop():
     global key_debounce
 
     screen.blit(menu_image, (0,0))
+    screen.blit(menu_char_image, (100, 100))
     handle_menu_selection(y_axis)
     pygame.draw.circle(screen, (255, 255, 255), (800, button_pos * 100 + 500), 10, 10)
-    draw_text('DEMO', 50, 950, 400)
+    draw_text('SNOWMAN', 50, 950, 400)
     draw_text('PLAY', 40, 950, 500)
     draw_text('ABOUT', 40, 950, 600)
     draw_text('QUIT', 40, 950, 700)
@@ -110,12 +110,20 @@ def game_loop():
 
     if should_apply_level:
         level.apply_spawn()
-    if level.level %2 == 0:
+    if level.level == 0:
         if level.end and len(small_enemies) == 0:
             level_finish()
+    else:
+        if level.end and level.boss and level.boss.hp <= 0:
+            if level.boss.rect.y > 900:
+                level.boss = False
+                level_finish()
+            else:
+                print(level.boss.position)
+                level.boss.rect.y += 3
+                level.boss.position = level.boss.rect.center
     focus = keys[pygame.K_LSHIFT]
     player.move(x_axis, y_axis, focus)
-    #if keys[pygame.K_SPACE] and can shoot:
     if can_shoot:
         can_shoot = False
         pygame.time.set_timer(key_shoot_debounce, 50)
@@ -128,8 +136,11 @@ def game_loop():
     points.update(player)
     points.draw(screen)
     player_bullets.draw(screen)
-    small_enemies.update(should_animate)
+    small_enemies.update(should_animate, player)
     small_enemies.draw(screen)
+    if level.boss:
+        level.boss.check_hitbox(player)
+        screen.blit(level.boss.image, level.boss.rect.topleft)
     if focus:
         if focus_timer == 360:
             focus_timer = 0 
@@ -145,19 +156,21 @@ def game_loop():
 
     screen.blit(player.image, player.position)
     if focus:
-        pygame.draw.circle(screen, (255, 0, 0), player.hitbox, player.hitbox_radius, 2)
-        pygame.draw.circle(screen, (255, 255, 255), player.hitbox, player.hitbox_radius - 1, 5)
+        pygame.draw.circle(screen, (255, 255, 255), player.hitbox, player.hitbox_radius, 5)
+        pygame.draw.circle(screen, (255, 0, 0), player.hitbox, player.hitbox_radius, 1)
 
     screen.fill("BLACK", (800, 0, 400, 800))
     draw_text(f"Points: {player.points}", 20, 1000, 200)
     draw_health(player, 1000, 100)
+    draw_combo(player, 1000, 300)
 
 while True:
     should_animate = False
     should_apply_level = False
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
-        #if event.type == apply_pattern_event and current_screen == screens.GAME: enemy.applyPattern(player)
+        if level.boss and level.boss.hp > 0:
+            if event.type == apply_pattern_event and current_screen == screens.GAME: level.boss.applyPattern(player)
         if event.type == key_input_debounce: key_debounce = False
         if event.type == small_enemy_animation_event: should_animate = True
         if event.type == key_shoot_debounce: can_shoot = True

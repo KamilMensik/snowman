@@ -1,4 +1,5 @@
 from small_enemy import marshmellow, cola
+from enemy import Enemy
 import pygame, os
 
 leveldata = data = eval('\t'.join([line.strip() for line in open('levels.txt').readlines()]))
@@ -15,6 +16,7 @@ class Levels():
         self.end = False
         self.game_end = False
         self.change_background = False
+        self.boss = False
     
     def apply_spawn(self):
         if self.wait > 0:
@@ -25,6 +27,9 @@ class Levels():
                     match key:
                         case 'background':
                             self.change_background = value
+                            self.iteration += 1
+                        case 'boss':
+                            self.boss = Enemy(value[0], value[1])
                             self.iteration += 1
                         case 'marshmellow':
                             marshmellow(value[0], value[1])

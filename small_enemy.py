@@ -50,8 +50,8 @@ class SmallEnemy(pygame.sprite.Sprite):
         for i in range(number_of_bullets):
             bullets.Bullet(angle*i + offset_angle, bullet_speed, self.position)
 
-    def update(self, should_animate) -> None:
-        self.check_hitbox()
+    def update(self, should_animate, player) -> None:
+        self.check_hitbox(player)
         
         if not self.finished_moving:
             if math.sqrt((self.position.x - self.finish_pos[0]) ** 2 + (self.finish_pos[1] - self.position.y) ** 2) < 5:
@@ -82,19 +82,21 @@ class SmallEnemy(pygame.sprite.Sprite):
                         self.attack_delay -= 1
         if should_animate: self.animate()
 
-    def receive_damage(self):
+    def receive_damage(self, player):
         self.hp -= 1
         hit.play()
         if self.hp <= 0:
+            player.points += round(100 * player.combo[0])
+            player.combo = [player.combo[0] + 0.1, 300]
             kill.play()
             for _ in range(self.points):
                 points.Point(self.position.x, self.position.y, points_sprite)
             self.kill()
-    def check_hitbox(self):
+    def check_hitbox(self, player):
         for i in bullets.player_bullets:
             if pygame.Rect.colliderect(self.rect, i.rect):
                 i.kill()
-                self.receive_damage()
+                self.receive_damage(player)
 
     def animate(self):
         self.animation_frame += 1

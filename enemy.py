@@ -8,11 +8,23 @@ pattern = []
 tracking_bullets = []
 
 class Enemy(object):
-    def __init__(self, hp) -> None:
+    def __init__(self, hp, name) -> None:
         self.hp = hp
-        self.image = pygame.image.load('sprites/enemy.png')
-        self.rect = self.image.get_rect(center=(1200 / 2 , 800 / 2))
+        self.pattern = f'data/spell_cards/{name}.txt'
+        self.image = pygame.image.load(f'sprites/{name}_boss.png')
+        self.rect = self.image.get_rect(center=(800 / 2 , 800 / 2))
         self.position = self.rect.center
+
+    def check_hitbox(self, player):
+        for i in bullets.player_bullets:
+            if pygame.Rect.colliderect(self.rect, i.rect):
+                i.kill()
+                self.receive_damage(player)
+
+    def receive_damage(self, player):
+        self.hp -= 1
+        if self.hp == 0:
+            player.points += 100000
     
     def ring(self, number_of_bullets: int, bullet_speed: int,  offset_angle: int = 0) -> None:
         angle = 360/number_of_bullets
@@ -43,7 +55,7 @@ class Enemy(object):
 
     def activate_spell_card(self) -> None:
         pattern.append({ 'wait': 2000 })
-        spellcard = open('spell_card.txt')
+        spellcard = open(self.pattern)
         for i in spellcard:
             try: 
                 attack = eval(i)

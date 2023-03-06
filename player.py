@@ -13,6 +13,7 @@ class Player(object):
         self.points = 0
         self.health = 3
         self.barrier = {}
+        self.combo = [1, 75]
 
     def check_boundaries(self, position, x_axis, y_axis) -> list:
         if x_axis < 0 and position.x <= -25:
@@ -34,6 +35,10 @@ class Player(object):
                     self.barrier = { 'position': self.position.center, 'size': 1}
 
     def move(self, x_axis, y_axis, focus) -> None:
+        if self.combo[1] > 0:
+            self.combo[1] -= 1
+            if self.combo[1] <= 0:
+                self.combo = [1, 0]
         if focus:
             x_axis /= 1.7
             y_axis /= 1.7
