@@ -39,6 +39,12 @@ def dialogue_loop():
         level.level = dialog.level
         level.iteration = 0
         current_screen = screens.GAME
+        match level.level:
+            case 0:
+                MusicHandler.change_music('Septette_for_the_dead_Snowman')
+            case 1:
+                MusicHandler.change_music('LoliPopJam')
+
     else:
         screen.blit(dialog.background, (0,0))
         if (keys[pygame.K_SPACE] or keys[pygame.K_RETURN]) and key_debounce == False :
