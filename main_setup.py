@@ -17,12 +17,12 @@ import dialogue
 from levels import Levels, backgrounds
 
 # FUNCTIONS
-def draw_text(text, size, x, y, font = 'fonts/04B.TTF', outline = False):
+def draw_text(text, size, x, y, font = 'fonts/04B.TTF', outline = False, color = (255, 255, 255), outline_color = (1,1,1)):
     font = pygame.font.Font(font, size)
     if outline:
-        text_surface = textOutline(font, text, (255, 255, 255), (1,1,1))
+        text_surface = textOutline(font, text, color, outline_color)
     else:
-        text_surface = font.render(text, True, (255,255,255))
+        text_surface = font.render(text, True, color)
 
     text_rect = text_surface.get_rect()
     text_rect.center = (x, y)

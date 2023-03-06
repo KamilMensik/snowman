@@ -14,6 +14,7 @@ def level_finish():
     dialog.level += 1
     dialog.page = 0
     dialog.end = False
+    MusicHandler.change_music('Talking')
     dialog.setup()
     current_screen = screens.DIALOGUE
 
@@ -57,6 +58,7 @@ def dialogue_loop():
         for i, text in enumerate(dialog.text):
             draw_text(text, 30, 600, 650 + (i * 30), 'fonts/Aller_Rg.ttf', True)
         draw_text(dialog.char_name, 15, 340, 597, outline=True)
+        draw_text(MusicHandler.falling_text.text, 25, MusicHandler.falling_text.position[0], MusicHandler.falling_text.position[1], 'fonts/Aller_Rg.ttf', True)
 
 def axis(keys) -> list:
     x_axis = (keys[pygame.K_RIGHT] or keys[pygame.K_d]) - (keys[pygame.K_LEFT] or keys[pygame.K_a])
@@ -78,6 +80,7 @@ def menu_loop():
     draw_text('PLAY', 40, 950, 500)
     draw_text('ABOUT', 40, 950, 600)
     draw_text('QUIT', 40, 950, 700)
+    draw_text(MusicHandler.falling_text.text, 25, MusicHandler.falling_text.position[0], MusicHandler.falling_text.position[1], 'fonts/Aller_Rg.ttf', True)
     if keys[pygame.K_RETURN]:
         match button_pos:
             case 0:
@@ -174,6 +177,7 @@ def game_loop():
     draw_text(f"Points: {player.points}", 20, 1000, 200)
     draw_health(player, 1000, 100)
     draw_combo(player, 1000, 300)
+    draw_text(MusicHandler.falling_text.text, 25, MusicHandler.falling_text.position[0], MusicHandler.falling_text.position[1], 'fonts/Aller_Rg.ttf', True)
 
 while True:
     should_animate = False

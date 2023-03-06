@@ -63,9 +63,10 @@ class Dialogue():
                     case 'right':
                         character = self.char_right
                 character.image = sprites.get(line.get('character')).get(line.get('emotion'))
-                self.char_name = line.get('character')
-                character.add_bounce()
-                self.text = textwrap.wrap(line.get('text'), 40, break_long_words=False)
+                if line.get('character') != 'blank':
+                    self.char_name = line.get('character')
+                    character.add_bounce()
+                    self.text = textwrap.wrap(line.get('text'), 40, break_long_words=False)
                 self.page += 1
         except IndexError:
             self.end = True
