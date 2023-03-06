@@ -16,10 +16,10 @@
         {'marshmellow' : [(800, -50), (400, 300)]},
         {'wait': 1325},
         {'marshmellow' : [(1000, -50), (200, 300)]},
-        {'wait': 10000},
+        {'wait': 11000},
     ],
     [
         {'background' : 'plain.jpg'},
-        {'boss' : [50, 'skittles']}
+        {'boss' : [1500, 'skittles']}
     ]
 ]

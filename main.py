@@ -107,6 +107,7 @@ def game_loop():
 
     if player.health == 0:
         current_screen = screens.MENU
+        level.boss = False
 
     if should_apply_level:
         level.apply_spawn()
