@@ -20,6 +20,10 @@
     ],
     [
         {'background' : 'plain.jpg'},
-        {'boss' : [1500, 'skittles']}
+        {'boss' : [1000, 'skittles']}
+    ],
+    [
+        {'background' : 'cave.jpg'},
+        {'boss' : [750, 'fuyuko']}
     ]
 ]
