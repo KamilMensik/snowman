@@ -10,6 +10,7 @@ pattern = []
 tracking_bullets = []
 
 hit = pygame.mixer.Sound('sounds/hit.wav')
+kill = pygame.mixer.Sound('sounds/boss_kill.mp3')
 attack = pygame.mixer.Sound('sounds/shoot.wav')
 
 class Enemy(object):
@@ -37,6 +38,7 @@ class Enemy(object):
         if self.hp == 0:
             for i in bullets.bullets:
                 i.kill()
+            kill.play()
             player.points += 100000
     
     def ring(self, number_of_bullets: int, bullet_speed: int,  offset_angle: int = 0) -> None:

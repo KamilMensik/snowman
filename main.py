@@ -45,6 +45,8 @@ def dialogue_loop():
                 MusicHandler.change_music('Septette_for_the_dead_Snowman')
             case 1:
                 MusicHandler.change_music('LoliPopJam')
+            case 2:
+                MusicHandler.change_music('Volcano_Hottape')
 
     else:
         screen.blit(dialog.background, (0,0))
