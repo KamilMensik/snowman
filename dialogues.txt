@@ -174,7 +174,7 @@
         { 'side' : 'left', 'character': 'karen', 'emotion': 'a_angry',
         'text' : '...' },
         { 'side' : 'right', 'character': 'skittles', 'emotion': 'happy',
-        'text' : 'Hey, dont look so down. You know what, I'll become your friend!' },
+        'text' : 'Hey, dont look so down. You know what, Ill become your friend!' },
         { 'side' : 'left', 'character': 'karen', 'emotion': 'a_surprised',
         'text' : 'YES, THANK Y-' },
         { 'side' : 'right', 'character': 'skittles', 'emotion': 'happy',

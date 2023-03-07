@@ -11,6 +11,8 @@ pygame.init()
 pygame.mixer.init()
 size = width, height = 1200, 800
 screen = pygame.display.set_mode(size)
+pygame.display.set_caption('Snowman - Now with 3% more snow!')
+pygame.display.set_icon(pygame.image.load('sprites/small_enemies/enemy_marshmellow/mellow1.png').convert_alpha())
 
 # IMPORTS NEEDED AFTER SCREEN
 import dialogue
@@ -42,7 +44,7 @@ def draw_health(player, x, y):
     screen.blit(text_surface, text_rect)
 
 # ENUMS
-screens = Enum('Screens', ['GAME', 'CREDITS', 'QUIT', 'MENU', 'DIALOGUE'])
+screens = Enum('Screens', ['GAME', 'ABOUT', 'QUIT', 'MENU', 'DIALOGUE'])
 
 # SOUNDS
 sounds = { 'browse' : pygame.mixer.Sound('sounds/Browse.wav'),
@@ -69,6 +71,7 @@ player = Player(player_image, 5)
 current_screen = screens.MENU
 game_backgrounds = backgrounds
 current_game_background = game_backgrounds['forest.jpg']
+exit_timer = 90
 
 # Variables
 key_debounce = False

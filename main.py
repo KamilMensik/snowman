@@ -65,6 +65,28 @@ def axis(keys) -> list:
     y_axis = (keys[pygame.K_DOWN] or keys[pygame.K_s]) - (keys[pygame.K_UP] or keys[pygame.K_w])
     return [x_axis, y_axis]
 
+def exit_loop():
+    global exit_timer
+
+    screen.fill('black')
+    draw_text('BYE!', 90, 600, 400)
+
+    exit_timer -= 1
+
+def about_loop():
+    global current_screen
+
+    screen.fill('black')
+    draw_text('Snowman', 60, 600, 275)
+    draw_text('A game by Professionell Gamekrs', 40, 600, 375)
+    draw_text('Coding: Kamil Mensik', 30, 600, 475)
+    draw_text('Music: Lukas Foniok', 30, 600, 525)
+    draw_text('Art: Viktorie Kacorova', 30, 600, 575)
+    draw_text('Press space to go back', 20, 200, 775)
+
+    if keys[pygame.K_SPACE]:
+        current_screen = screens.MENU
+
 def menu_loop():
     global current_screen
     global key_debounce
@@ -108,9 +130,11 @@ def menu_loop():
             case 2:
                 sounds['exit'].play()
                 current_screen = screens.QUIT
+                MusicHandler.stop_music()
             case other:
                 sounds['proceed'].play()
-                current_screen = screens.CREDITS
+                current_screen = screens.ABOUT
+
 def game_loop():
     global focus_timer
     global should_animate
@@ -179,7 +203,7 @@ def game_loop():
     draw_combo(player, 1000, 300)
     draw_text(MusicHandler.falling_text.text, 25, MusicHandler.falling_text.position[0], MusicHandler.falling_text.position[1], 'fonts/Aller_Rg.ttf', True)
 
-while True:
+while exit_timer > 0:
     should_animate = False
     should_apply_level = False
     for event in pygame.event.get():
@@ -211,5 +235,9 @@ while True:
             menu_loop()
         case screens.DIALOGUE:
             dialogue_loop()
+        case screens.QUIT:
+            exit_loop()
+        case screens.ABOUT:
+            about_loop()
     pygame.display.flip()
     clock.tick(90)

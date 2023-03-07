@@ -55,4 +55,4 @@ class MusicHandler():
             self.play_music(volume)
 
     def stop_music(self):
-        mixer.music.stop()
+        mixer.music.fadeout(500)

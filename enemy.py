@@ -58,25 +58,26 @@ class Enemy(object):
         spellcard = open(self.pattern)
         for i in spellcard:
             try: 
-                attack = eval(i)
-                for key, data in attack.items():
-                    match key:
-                        case 'spiral':
-                            self.spiral(data[0], data[1], data[2], data[3], data[4])
-                        case 'ring':
-                            for _ in range(data[3]):
-                                pattern.append({'ring': {'bullets': data[0], 'speed': data[1],
-                                                        'offset': data[2]}})
-                                pattern.append({'wait': data[4]})
-                        case 'tracking':
-                            for _ in range(data[2]):
-                                pattern.append({'tracking': {'bullets': data[0], 'speed': 0}})
-                                pattern.append({'wait': data[3]})
-                                pattern.append({'fire_tracking' : data[1]})
-                        case 'wait':
-                            pattern.append({ 'wait': data })
+                if i:
+                    attack = eval(i)
+                    for key, data in attack.items():
+                        match key:
+                            case 'spiral':
+                                self.spiral(data[0], data[1], data[2], data[3], data[4])
+                            case 'ring':
+                                for _ in range(data[3]):
+                                    pattern.append({'ring': {'bullets': data[0], 'speed': data[1],
+                                                            'offset': data[2]}})
+                                    pattern.append({'wait': data[4]})
+                            case 'tracking':
+                                for _ in range(data[2]):
+                                    pattern.append({'tracking': {'bullets': data[0], 'speed': 0}})
+                                    pattern.append({'wait': data[3]})
+                                    pattern.append({'fire_tracking' : data[1]})
+                            case 'wait':
+                                pattern.append({ 'wait': data })
             except:
-                print('IT DOWN BAAD MAN')
+                print('IT DOWN BAD MAN')
 
     def applyPattern(self, player):
         try:
