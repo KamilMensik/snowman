@@ -20,7 +20,7 @@ class MusicHandler():
     def __init__(self) -> None:
         self.song = False
         self.fadeout = 0
-        self.in_queue = False
+        self.in_queue = ['', 0]
         self.falling_text = FallingText()
 
     def play_music(self, volume):
@@ -28,6 +28,7 @@ class MusicHandler():
         pygame.mixer.music.set_volume(volume)
         self.falling_text.position = [600, 750]
         self.falling_text.wait = 180
+        self.in_queue = ['', 0]
         mixer.music.play(-1)
 
     def tick(self):

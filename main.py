@@ -96,7 +96,7 @@ def menu_loop():
     global current_screen
     global key_debounce
 
-    if MusicHandler.song != 'sounds/songs/Menu_Theme.mp3':
+    if MusicHandler.song != 'sounds/songs/Menu_Theme.mp3' and MusicHandler.in_queue[0] != 'sounds/songs/Menu_Theme.mp3':
         MusicHandler.change_music('Menu_Theme')
 
     screen.blit(menu_image, (0,0))
