@@ -8,6 +8,8 @@ songs = {
     'Menu_Theme' : { 'format' : 'mp3', 'volume' : 1},
     'Septette_for_the_dead_Snowman' : { 'format' : 'mp3', 'volume' : 1},
     'Talking' : { 'format' : 'mp3', 'volume' : 1}
+    'Volcano_Hottape' : { 'format' : 'mp3', 'volume' : 1}
+
 }
 class FallingText():
     def __init__(self) -> None:
