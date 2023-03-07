@@ -49,7 +49,7 @@ class Enemy(object):
         global tracking_bullets
         
         for i in tracking_bullets:
-            i.velocity = Vector2(0.1 * speed, 0).rotate(math.degrees(math.atan2(player.position[1] - i.pos[1], player.position[0] - i.pos[0]))) * 5
+            i.velocity = Vector2(0.1 * speed, 0).rotate(math.degrees(math.atan2(player.hitbox[1] - i.pos[1], player.hitbox[0] - i.pos[0]))) * 5
         tracking_bullets = []
 
     def spiral(_self, number_of_bullets, bullet_speed, amount, delay, direction):

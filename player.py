@@ -29,7 +29,7 @@ class Player(object):
     def check_hitbox(self, projectiles):
         if self.barrier == {}:
             for i in projectiles:
-                if math.sqrt((i.pos.x - self.hitbox[0])**2 + (i.pos.y - self.hitbox[1])**2) < i.radius + self.hitbox_radius:
+                if math.sqrt((i.pos.x - self.hitbox[0])**2 + (i.pos.y - self.hitbox[1])**2) < i.radius - 1 + self.hitbox_radius:
                     i.kill()
                     self.health -= 1
                     self.barrier = { 'position': self.position.center, 'size': 1}
@@ -51,4 +51,4 @@ class Player(object):
                 self.barrier = {}
     
     def shoot(self):
-        bullets.Bullet(270, 25, self.position.center, type = 'player')
+        bullets.Bullet(270, 25, self.position.center, type = 'player', sprite = 'sprites/player_bullet.png')

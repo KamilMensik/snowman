@@ -6,9 +6,9 @@ bullets = pygame.sprite.Group()
 player_bullets = pygame.sprite.Group()
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, angle, speed, position, radius = 8, type = 'enemy') -> None:
+    def __init__(self, angle, speed, position, radius = 8, type = 'enemy', sprite = 'sprites/bullet.png') -> None:
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('sprites/bullet.png').convert_alpha()
+        self.image = pygame.image.load(sprite).convert_alpha()
         self.rect = self.image.get_rect(center=position)
         self.velocity = Vector2(0.1 * speed, 0).rotate(angle) * 5
         self.pos = Vector2(self.rect.center)
