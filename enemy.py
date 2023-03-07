@@ -4,8 +4,13 @@ from pygame.math import Vector2
 import bullets
 import math
 
+pygame.mixer.init()
+
 pattern = []
 tracking_bullets = []
+
+hit = pygame.mixer.Sound('sounds/hit.wav')
+attack = pygame.mixer.Sound('sounds/shoot.wav')
 
 class Enemy(object):
     def __init__(self, hp, name) -> None:
@@ -28,11 +33,15 @@ class Enemy(object):
 
     def receive_damage(self, player):
         self.hp -= 1
+        hit.play()
         if self.hp == 0:
+            for i in bullets.bullets:
+                i.kill()
             player.points += 100000
     
     def ring(self, number_of_bullets: int, bullet_speed: int,  offset_angle: int = 0) -> None:
         angle = 360/number_of_bullets
+        attack.play()
         for i in range(number_of_bullets):
             bullets.Bullet(angle*i + offset_angle, bullet_speed, self.position)
 
@@ -48,7 +57,8 @@ class Enemy(object):
 
     def fire_tracking(self, speed, player):
         global tracking_bullets
-        
+
+        attack.play()
         for i in tracking_bullets:
             i.velocity = Vector2(0.1 * speed, 0).rotate(math.degrees(math.atan2(player.hitbox[1] - i.pos[1], player.hitbox[0] - i.pos[0]))) * 5
         tracking_bullets = []

@@ -3,6 +3,8 @@ from pygame.locals import *
 import bullets
 import math
 
+pygame.mixer.init()
+
 class Player(object):
     def __init__(self, image, speed) -> None:
         self.image = image
@@ -31,6 +33,7 @@ class Player(object):
             for i in projectiles:
                 if math.sqrt((i.pos.x - self.hitbox[0])**2 + (i.pos.y - self.hitbox[1])**2) < i.radius - 1 + self.hitbox_radius:
                     i.kill()
+                    pygame.mixer.Sound('sounds/player_hit.mp3').play()
                     self.health -= 1
                     self.barrier = { 'position': self.position.center, 'size': 1}
 
