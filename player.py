@@ -16,6 +16,7 @@ class Player(object):
         self.health = 3
         self.barrier = {}
         self.combo = [1, 75]
+        self.death_wait = 0
 
     def check_boundaries(self, position, x_axis, y_axis) -> list:
         if x_axis < 0 and position.x <= -25:
@@ -37,6 +38,7 @@ class Player(object):
                     self.barrier = { 'position': self.position.center, 'size': 1}
                     if self.health <= 0:
                         pygame.mixer.Sound('sounds/player_death_sound.mp3').play()
+                        self.death_wait = 180
                     else:
                         pygame.mixer.Sound('sounds/player_hit.mp3').play()
 

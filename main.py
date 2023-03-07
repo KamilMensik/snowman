@@ -122,6 +122,7 @@ def menu_loop():
                 player.points = 0
                 player.position.center = (400, 750)
                 player.barrier = {}
+                player.death_wait = 0
                 dialog.level = 0
                 dialog.page = 0
                 dialog.end = False
@@ -150,10 +151,6 @@ def game_loop():
     global can_shoot
     global current_screen
 
-    if player.health == 0:
-        current_screen = screens.MENU
-        level.boss = False
-
     if should_apply_level:
         level.apply_spawn()
     if level.level == 0:
@@ -168,16 +165,24 @@ def game_loop():
                 level.boss.rect.y += 3
                 level.boss.position = level.boss.rect.center
     focus = keys[pygame.K_LSHIFT]
-    player.move(x_axis, y_axis, focus)
-    if can_shoot:
-        can_shoot = False
-        pygame.time.set_timer(key_shoot_debounce, 50)
-        player.shoot()
+    if player.health <= 0:
+        if player.death_wait <= 0:
+            current_screen = screens.MENU
+            level.boss = False
+        else:
+            player.death_wait -= 1
+            player.position.y += 2
+    else:
+        player.move(x_axis, y_axis, focus)
+        if can_shoot:
+            can_shoot = False
+            pygame.time.set_timer(key_shoot_debounce, 50)
+            player.shoot()
     screen.blit(current_game_background, (0,0))
     bullets.update()
     player_bullets.update()
-    player.check_hitbox(bullets)
-    bullets.draw(screen)
+    if player.health > 0:
+        player.check_hitbox(bullets)
     points.update(player)
     points.draw(screen)
     player_bullets.draw(screen)
@@ -187,10 +192,7 @@ def game_loop():
         level.boss.check_hitbox(player)
         draw_boss_healthbar(level.boss)
         screen.blit(level.boss.image, level.boss.rect.topleft)
-    if focus:
-        if focus_timer == 360:
-            focus_timer = 0 
-        focus_timer += 30
+    if focus and player.health > 0:
         focus_rect = focus_image.get_rect()
         focus_rect.center = player.position.center
         screen.blit(focus_image, focus_rect)
@@ -201,7 +203,8 @@ def game_loop():
                 i.kill()
 
     screen.blit(player.image, player.position)
-    if focus:
+    bullets.draw(screen)
+    if focus and player.health > 0:
         pygame.draw.circle(screen, (255, 255, 255), player.hitbox, player.hitbox_radius, 5)
         pygame.draw.circle(screen, (255, 0, 0), player.hitbox, player.hitbox_radius, 1)
 
@@ -210,6 +213,8 @@ def game_loop():
     draw_health(player, 1000, 100)
     draw_combo(player, 1000, 300)
     draw_text(MusicHandler.falling_text.text, 25, MusicHandler.falling_text.position[0], MusicHandler.falling_text.position[1], 'fonts/Aller_Rg.ttf', True)
+    if player.health <= 0:
+        draw_text('YOU DIED!', 70, 400, 400, 'fonts/BloodyTerror-GOW9Z.ttf', True, (255,0,0), (255, 255, 255))
 
 while exit_timer > 0:
     should_animate = False
