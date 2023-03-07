@@ -178,6 +178,7 @@ def game_loop():
     small_enemies.draw(screen)
     if level.boss:
         level.boss.check_hitbox(player)
+        draw_boss_healthbar(level.boss)
         screen.blit(level.boss.image, level.boss.rect.topleft)
     if focus:
         if focus_timer == 360:

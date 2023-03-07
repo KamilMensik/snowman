@@ -36,6 +36,10 @@ def draw_combo(player, x, y):
     draw_text(f'{round(player.combo[0], 1)}x', 25, x, y, 'fonts/Monocraft.otf')
     draw_text(bar, 25, x, y+25, 'fonts/Monocraft.otf')
 
+def draw_boss_healthbar(boss):
+    pygame.draw.rect(screen, (100, 100, 100), (0, 0, 800, 40))
+    pygame.draw.rect(screen, (0, 255, 0), (0, 0, 800 * (boss.hp / boss.max_hp), 40))
+
 def draw_health(player, x, y):
     font = pygame.font.Font('fonts/Segoe UI.ttf', 60)
     text_surface = font.render('♡' * player.health, True, (255, 0, 0))

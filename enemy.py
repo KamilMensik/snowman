@@ -10,6 +10,7 @@ tracking_bullets = []
 class Enemy(object):
     def __init__(self, hp, name) -> None:
         self.hp = hp
+        self.max_hp = hp
         self.pattern = f'data/spell_cards/{name}.txt'
         self.image = pygame.image.load(f'sprites/{name}_boss.png')
         self.rect = self.image.get_rect(center=(800 / 2 , -50))
