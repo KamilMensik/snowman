@@ -36,6 +36,9 @@ def dialogue_loop():
     global key_debounce
     global current_screen
 
+    if level.boss:
+        level.boss = False
+
     if dialog.end:
         level.level = dialog.level
         level.iteration = 0
@@ -114,6 +117,7 @@ def menu_loop():
                 level.iteration = 0
                 level.game_end = False
                 level.end = False
+                level.boss = False
                 player.health = 3
                 player.points = 0
                 player.position.center = (400, 750)
@@ -128,6 +132,8 @@ def menu_loop():
                 for i in bullets:
                     i.kill()
                 for i in small_enemies:
+                    i.kill()
+                for i in points:
                     i.kill()
             case 2:
                 sounds['exit'].play()
