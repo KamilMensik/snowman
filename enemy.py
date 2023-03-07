@@ -6,9 +6,6 @@ import math
 
 pygame.mixer.init()
 
-pattern = []
-tracking_bullets = []
-
 hit = pygame.mixer.Sound('sounds/hit.wav')
 kill = pygame.mixer.Sound('sounds/boss_kill.mp3')
 attack = pygame.mixer.Sound('sounds/shoot.wav')
@@ -21,6 +18,8 @@ class Enemy(object):
         self.image = pygame.image.load(f'sprites/{name}_boss.png')
         self.rect = self.image.get_rect(center=(800 / 2 , -50))
         self.position = self.rect.center
+        self.pattern_list = []
+        self.tracking_bullets = []
 
     def check_hitbox(self, player):
         if self.hp > 0 and self.rect.center[1] < 400:
@@ -65,13 +64,13 @@ class Enemy(object):
             i.velocity = Vector2(0.1 * speed, 0).rotate(math.degrees(math.atan2(player.hitbox[1] - i.pos[1], player.hitbox[0] - i.pos[0]))) * 5
         tracking_bullets = []
 
-    def spiral(_self, number_of_bullets, bullet_speed, amount, delay, direction):
+    def spiral(self, number_of_bullets, bullet_speed, amount, delay, direction):
         for i in range(amount):
-            pattern.append({'ring': {'bullets': number_of_bullets, 'speed': bullet_speed, 'offset': i * direction * 10}})
-            pattern.append({ 'wait': delay })
+            self.pattern_list.append({'ring': {'bullets': number_of_bullets, 'speed': bullet_speed, 'offset': i * direction * 10}})
+            self.pattern_list.append({ 'wait': delay })
 
     def activate_spell_card(self) -> None:
-        pattern.append({ 'wait': 2000 })
+        self.pattern_list.append({ 'wait': 2000 })
         spellcard = open(self.pattern)
         for i in spellcard:
             try: 
@@ -83,37 +82,37 @@ class Enemy(object):
                                 self.spiral(data[0], data[1], data[2], data[3], data[4])
                             case 'ring':
                                 for _ in range(data[3]):
-                                    pattern.append({'ring': {'bullets': data[0], 'speed': data[1],
+                                    self.pattern_list.append({'ring': {'bullets': data[0], 'speed': data[1],
                                                             'offset': data[2]}})
-                                    pattern.append({'wait': data[4]})
+                                    self.pattern_list.append({'wait': data[4]})
                             case 'tracking':
                                 for _ in range(data[2]):
-                                    pattern.append({'tracking': {'bullets': data[0], 'speed': 0}})
-                                    pattern.append({'wait': data[3]})
-                                    pattern.append({'fire_tracking' : data[1]})
+                                    self.pattern_list.append({'tracking': {'bullets': data[0], 'speed': 0}})
+                                    self.pattern_list.append({'wait': data[3]})
+                                    self.pattern_list.append({'fire_tracking' : data[1]})
                             case 'wait':
-                                pattern.append({ 'wait': data })
+                                self.pattern_list.append({ 'wait': data })
             except:
                 print('IT DOWN BAD MAN')
 
     def applyPattern(self, player):
         try:
-            item = pattern[0]
+            item = self.pattern_list[0]
             for key, value in item.items():
                 match key:
                     case 'ring':
                         self.ring(value.get('bullets'), value.get('speed'), value.get('offset'))
-                        pattern.pop(0)
+                        self.pattern_list.pop(0)
                     case 'wait':
                         if value <= 0:
-                            pattern.pop(0)
+                            self.pattern_list.pop(0)
                         else:
                             item['wait'] -= 50
                     case 'tracking':
                         self.tracking(value.get('bullets'), value.get('speed'))
-                        pattern.pop(0)
+                        self.pattern_list.pop(0)
                     case 'fire_tracking':
                         self.fire_tracking(value, player)
-                        pattern.pop(0)
+                        self.pattern_list.pop(0)
         except IndexError:
             self.activate_spell_card()

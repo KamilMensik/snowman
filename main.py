@@ -165,7 +165,6 @@ def game_loop():
                 level.boss = False
                 level_finish()
             else:
-                print(level.boss.position)
                 level.boss.rect.y += 3
                 level.boss.position = level.boss.rect.center
     focus = keys[pygame.K_LSHIFT]
