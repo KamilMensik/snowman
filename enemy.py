@@ -48,21 +48,19 @@ class Enemy(object):
 
     def tracking(self, number_of_bullets, bullet_speed):
         if number_of_bullets == 1:
-            tracking_bullets.append(bullets.Bullet(0,bullet_speed, (self.position[0], self.position[1] + 50)))
+            self.tracking_bullets.append(bullets.Bullet(0,bullet_speed, (self.position[0], self.position[1] + 50)))
         else:
             angle = 360 / number_of_bullets
             for i in range(number_of_bullets):
                 pos_x = self.position[0] + 50 * math.cos(math.radians(angle * i))
                 pos_y = self.position[1] + 50 * math.sin(math.radians(angle * i))
-                tracking_bullets.append(bullets.Bullet(0,bullet_speed, (pos_x, pos_y)))
+                self.tracking_bullets.append(bullets.Bullet(0,bullet_speed, (pos_x, pos_y)))
 
     def fire_tracking(self, speed, player):
-        global tracking_bullets
-
         attack.play()
-        for i in tracking_bullets:
+        for i in self.tracking_bullets:
             i.velocity = Vector2(0.1 * speed, 0).rotate(math.degrees(math.atan2(player.hitbox[1] - i.pos[1], player.hitbox[0] - i.pos[0]))) * 5
-        tracking_bullets = []
+        self.tracking_bullets = []
 
     def spiral(self, number_of_bullets, bullet_speed, amount, delay, direction):
         for i in range(amount):
