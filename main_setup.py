@@ -11,7 +11,7 @@ pygame.init()
 pygame.mixer.init()
 size = width, height = 1200, 800
 screen = pygame.display.set_mode(size)
-pygame.display.set_caption('Snowman - Now with 3% more snow!')
+pygame.display.set_caption('Snowman - Now with 3% more snow!', 'Snowman')
 pygame.display.set_icon(pygame.image.load('sprites/small_enemies/enemy_marshmellow/mellow1.png').convert_alpha())
 
 # IMPORTS NEEDED AFTER SCREEN

@@ -12,14 +12,18 @@ class Enemy(object):
         self.hp = hp
         self.pattern = f'data/spell_cards/{name}.txt'
         self.image = pygame.image.load(f'sprites/{name}_boss.png')
-        self.rect = self.image.get_rect(center=(800 / 2 , 800 / 2))
+        self.rect = self.image.get_rect(center=(800 / 2 , -50))
         self.position = self.rect.center
 
     def check_hitbox(self, player):
-        for i in bullets.player_bullets:
-            if pygame.Rect.colliderect(self.rect, i.rect):
-                i.kill()
-                self.receive_damage(player)
+        if self.hp > 0 and self.rect.center[1] < 400:
+            self.rect.y += 5
+            self.position = self.rect.center
+        else:
+            for i in bullets.player_bullets:
+                if pygame.Rect.colliderect(self.rect, i.rect):
+                    i.kill()
+                    self.receive_damage(player)
 
     def receive_damage(self, player):
         self.hp -= 1
